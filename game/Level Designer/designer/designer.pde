@@ -10,8 +10,8 @@ Grid grid;
 
 void setup () {
   size (240, 320);
-  cols = 8;
-  rows = 12;
+  cols = 4;
+  rows = 10;
   noLoop();  
   gameStage = PRIMEIRA_VEZ;
 }
@@ -124,3 +124,4 @@ private class Square {
   
   
 }
+
