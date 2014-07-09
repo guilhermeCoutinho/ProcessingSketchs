@@ -3,7 +3,7 @@ static final int LEFT_Q = 2;
 static final int BOT_Q = 3;
 static final int RIGHT_Q = 4;
 
-int quadrante (){ 
+int quadrante (){
   float ry = -(height/width) * mouseX ;
   float sy = (height/width) * mouseX - height;
   if (-mouseY < ry ) {

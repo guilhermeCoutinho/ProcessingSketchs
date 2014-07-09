@@ -32,11 +32,7 @@ void setup () {
   y = 0;
   x = 50;
   animationStage = MOVE_DOWN;
- 
-  println ("guitar:" , guitar.getLengthMs() );
-  println ("drums:" , drums.getLengthMs() );
-  println ("sax:" , sax.getLengthMs() );
-  println ("piano:" , piano.getLengthMs () ) ;
+
   
 }
 
