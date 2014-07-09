@@ -34,6 +34,7 @@ public class Grid {
   public int checkWin() {
     checkWinVer();
     checkWinHor();
+    checkWinDiag();
     if ( orangeWins ) {println("orange wins");return ORANGE;}
     if ( blackWins ) {println("black wins");return BLACK;}
     return -1;
@@ -51,9 +52,30 @@ public class Grid {
          if (findWin(i,j) ) break;
   }
 
-  private void checkWinDiag () {
-    
+  private void checkSecondaryDiagonal (int i , int j) {
+    for ( ; i>= 0 && j < COLS ; i--,j++) if (findWin(i,j) ) break;
   }
+  
+  private void checkPrincipalDiagonal ( int i , int j ) {
+    for ( ; i < ROWS && j < COLS ; i++ , j++) if (findWin(i,j) ) break;
+  }
+ 
+  private void checkWinDiag () {
+    checkSecondaryDiagonal(3,0);
+    checkSecondaryDiagonal(4,0);
+    checkSecondaryDiagonal(5,0);
+    checkSecondaryDiagonal(5,1);
+    checkSecondaryDiagonal(5,2);
+    checkSecondaryDiagonal(5,3);
+    
+    checkPrincipalDiagonal(2,0);
+    checkPrincipalDiagonal(1,0);
+    checkPrincipalDiagonal(0,0);
+    checkPrincipalDiagonal(0,1);
+    checkPrincipalDiagonal(0,2);
+    checkPrincipalDiagonal(0,3);
+      
+}
 
   private boolean findWin (int i, int j) {
     if (board[i][j].getCor() == BLANK ) {countB = 0 ; countO = 0;}
