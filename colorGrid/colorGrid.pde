@@ -4,7 +4,7 @@ int row;
 int col;
 boolean b;
 
-
+/*
 void setup () {
   size(300,400);
   col = 30;
@@ -12,10 +12,11 @@ void setup () {
   sq_w = width/col;
   sq_h = height/row;
 }
+*/
 
-void draw () {
+void drawBackGround () {
   
-    b = !b;
+ b = !b;
  if (b) {
   for ( int i = 0 ; i < width ; i ++ ) {
     for ( int j = 0 ; j < height; j++ ) {
@@ -44,7 +45,7 @@ void draw () {
 
  
  
-  stroke (255);
+/*  stroke (255);
   noFill();
   
   for ( int i = 0 ; i < col ; i ++ ) {
@@ -53,7 +54,7 @@ void draw () {
       rect (i*sq_w , j*sq_h , width , height );
     }
   }
-
+*/
   
 }
 

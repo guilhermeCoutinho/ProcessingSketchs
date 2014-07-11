@@ -1,6 +1,7 @@
 private final static int BLANK = 0;
 private final static int BLACK = 1;
 private final static int ORANGE = 2;
+private final static int BLUE = 3;
 
 
 public class Grid {
@@ -8,12 +9,13 @@ public class Grid {
   private Piece currPlayer ;
   private boolean orangeWins;
   private boolean blackWins;
-  private int countB = 0 , countO = 0;  
-  
+  private int countB = 0 , countO = 0;
+  private int [] I = new int[4];
+  private int [] J = new int[4];
 
   public Grid (int cor) {
     reset();
-    currPlayer = new Piece (ORANGE);
+    currPlayer = new Piece (cor);
   }
 
   
@@ -35,10 +37,16 @@ public class Grid {
     checkWinVer();
     checkWinHor();
     checkWinDiag();
-    if ( orangeWins ) {println("orange wins");return ORANGE;}
-    if ( blackWins ) {println("black wins");return BLACK;}
+    if ( orangeWins ){winner = ORANGE;}
+    if ( blackWins ) {winner = BLACK;}
     return -1;
 }
+
+  private void paintWinner () {
+    for (int i = 0 ; i < 4 ; i++) {
+      board[I[i]][J[i]].setCor(BLUE);
+    }
+  }
 
   private void checkWinVer () {
     for ( int i = 0 ; i < COLS ; i++ ) 
@@ -78,9 +86,30 @@ public class Grid {
 }
 
   private boolean findWin (int i, int j) {
-    if (board[i][j].getCor() == BLANK ) {countB = 0 ; countO = 0;}
-    else if (board[i][j].getCor() == BLACK ) {countB ++ ; countO = 0; if (countB == 4 ) { blackWins = true;} }
-    else if (board[i][j].getCor() == ORANGE ) {countO ++ ; countB = 0; if (countO == 4 ) {orangeWins = true;} }
+    if (board[i][j].getCor() == BLANK ) {
+      countB = 0;
+      countO = 0;
+      }
+    else if (board[i][j].getCor() == BLACK ) {
+      I[countB] = i;
+      J[countB] = j;
+      countB ++;
+      countO = 0;
+      if (countB == 4 ) {
+        blackWins = true;
+        paintWinner();
+        } 
+      }
+    else if (board[i][j].getCor() == ORANGE ) {
+      I[countO] = i;
+      J[countO] = j;
+      countO ++ ;
+      countB = 0;
+      if (countO == 4 ) {
+        orangeWins = true;
+        paintWinner();
+        }
+      }
     return blackWins || orangeWins;
   }
 
