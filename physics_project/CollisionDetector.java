@@ -26,6 +26,7 @@ class CollisionDetector implements ContactListener
   PApplet m_applet;
   Method collisionMethod;
   boolean collisionHappened = false;
+  
   public CollisionDetector(Physics physics, PApplet applet)
   {
     m_applet = applet;
