@@ -1,0 +1,23 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="processing.test.connect4"
+    android:versionCode="5"
+    android:versionName="5.0" >
+
+    <uses-sdk android:minSdkVersion="10" />
+
+    <application
+        android:icon="@drawable/icon"
+        android:label="Connect4" >
+        <activity android:name=".Connect4" >
+            <meta-data 
+                	android:name="com.google.android.gms.version"
+			        android:value="@integer/google_play_services_version" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+    </application>
+
+</manifest>
