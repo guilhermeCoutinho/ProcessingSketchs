@@ -7,7 +7,6 @@ import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.p5.*;
 import org.jbox2d.dynamics.*;
 
-private static Game game;
 private static Physics physics;
 private CollisionDetector detector;
 private Body platform;
