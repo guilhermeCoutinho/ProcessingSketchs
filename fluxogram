@@ -1,0 +1,131 @@
+float marginW;
+float distanceBetweenButtons ;
+float buttonsW;
+float buttonH;
+float buttonW;
+float marginButtonH;
+int nButton;
+ArrayList <Button> buttons ;
+String[] buttonNames;
+int dragging ;
+
+
+void setup () {
+  size(700,600);
+  size(240,320);
+  nButton = 4;
+  frameRate(10);
+  marginW = width / 11;
+  distanceBetweenButtons = width / 50;
+  marginButtonH = height/11 / 11 ;
+  buttonH = height /11 - marginButtonH * 2 ;
+  buttonW = (width - (2 * marginW) - ((nButton-1) * distanceBetweenButtons)  ) / nButton ;
+  buttonNames = new String[] {"+" , "-" , "X" , "O"} ;
+  buttons = new ArrayList<Button>();
+  dragging  = -1;
+  for ( int i = 0 ; i < nButton ; i ++ ) {
+    buttons.add ( new Button (buttonNames[i] ,marginW + i * distanceBetweenButtons + i * buttonW ,10*(height/11)+ marginButtonH) ) ;
+  }
+
+
+  
+}
+void draw () {
+  background(255);
+  
+  if (dragging != -1 ) {
+    buttons.get(dragging).upRightPos.X = mouseX ;
+    buttons.get(dragging).upRightPos.Y = mouseY ;     
+  }
+  
+  line ( marginW , 10*(height/11) , width - marginW , 10*(height/11) );
+  for ( int i = 0 ; i <buttons.size() ; i ++ ) {
+    fill(255);
+    rect ( buttons.get(i).upRightPos.X , buttons.get(i).upRightPos.Y  , buttonW, buttonH , 7);
+    fill(0);
+    textSize(height/20);
+    textAlign(CENTER);
+    text (buttons.get(i).name , buttons.get(i).upRightPos.X + buttonW / 2,
+    buttons.get(i).upRightPos.Y  + buttonH/2 + height / 40 );
+  }
+
+  
+}
+
+
+void mousePressed () {
+  int selected = -1 ;
+  if (dragging != -1 ) {
+    dragging = -1 ;
+  }
+  for (int i = 0 ; i < buttons.size() ; i++ ){
+    if (mouseX > buttons.get(i).upRightPos.X && mouseX < buttons.get(i).upRightPos.X + buttonW &&
+    mouseY > buttons.get(i).upRightPos.Y && mouseY < buttons.get(i).upRightPos.Y + buttonH){
+      selected = i;
+    }
+  }
+  
+  if (selected == 0 ) {
+    buttons.add( new Button (random( 0 , width) , random (0 , height) ) ) ;
+  }else if (selected > 3) {
+    dragging = selected;
+  }
+  
+}
+
+void mouseDragged () {
+  int selected = -1 ;
+
+  for (int i= 4 ; i < buttons.size() ; i++ ){
+    if (mouseX > buttons.get(i).upRightPos.X && mouseX < buttons.get(i).upRightPos.X + buttonW &&
+    mouseY > buttons.get(i).upRightPos.Y && mouseY < buttons.get(i).upRightPos.Y + buttonH){
+      selected = i;
+    }
+  }
+  
+  if (selected != -1 ) {
+    buttons.get(selected).upRightPos.X = mouseX ;
+    buttons.get(selected).upRightPos.Y = mouseY ;
+  }
+  
+}
+
+class Button  {
+  Point upRightPos;
+  float wid;
+  float hei;
+  String name;
+  
+  Button (String name , float X , float Y  ) {
+    this.name = name;
+    upRightPos = new Point(X , Y );
+  }
+  
+  Button(float X , float Y ) {
+    upRightPos = new Point(X , Y );
+    this.name = "";
+  }
+  
+  
+}
+
+
+class Point {
+  float X , Y ;
+  
+  Point (){}
+  Point (float X , float Y ) {
+    this.X = X ;
+    this.Y = Y;
+  }
+}
+
+
+
+
+
+
+
+
+
+
