@@ -1,0 +1,242 @@
+Maxim maxim;
+AudioPlayer bd;
+AudioPlayer cp;
+AudioPlayer sn;
+AudioPlayer hh;
+AudioPlayer cr;
+
+boolean []bass;
+boolean []snare;
+boolean []hihat;
+boolean []crash;
+boolean []clap;
+//boolean []ride;
+
+int playHead;
+
+int numBeats;
+float duration;
+int[] n;
+
+int currentBeat;
+float buttonW;
+float buttonH;
+float distanceW;
+float distanceH ;
+
+PImage ff;
+PImage ret;
+PImage mais , menos;
+
+
+void setup () {
+  size(700 , 600);
+  numBeats = 16;
+  reset();
+  duration = 10;
+  maxim = new Maxim(this);
+  buttonH = height / 15;
+  n = new int[] { 15 , 20 , 25 , 30 , 35};
+  bd = maxim.loadFile("sounds/bd.wav");
+  cp = maxim.loadFile("sounds/clap.wav");
+  cr = maxim.loadFile("sounds/cr.wav");
+  hh = maxim.loadFile("sounds/hh.wav");
+  sn = maxim.loadFile("sounds/sn.wav");
+ 
+  bd.setLooping(false);
+  cp.setLooping(false);
+  cr.setLooping(false);
+  hh.setLooping(false);
+  sn.setLooping(false);
+  ff = loadImage("images/ff.jpg");
+  ret = loadImage ("images/return.jpg");
+  mais = loadImage ("images/mais.jpg");
+  menos = loadImage ("images/menos.jpg");  
+  frameRate(60);
+}
+
+void mantain (boolean []original , boolean []after) {
+  if (original != null) {
+    for (int i = 0 ; i < original.length && i < after.length ; i++ ) {
+      after[i] = original[i];
+    }
+  }
+}
+
+
+void reset () {
+  
+  currentBeat = 0;
+  boolean aux[];
+  aux = bass;
+  bass = new boolean[numBeats];
+  mantain (aux , bass );
+  aux = snare;
+  snare = new boolean[numBeats];
+  mantain(aux, snare);
+  aux = hihat;
+  hihat = new boolean[numBeats];
+  mantain(aux , hihat );
+  aux = crash;
+  crash = new boolean[numBeats];
+  mantain (aux , crash );
+  aux = clap; 
+  clap = new boolean[numBeats];
+  mantain (aux , clap );
+//  ride = new boolean[numBeats];  
+  distanceW = (width / 100) ;
+  distanceH = height / 100;
+  println(distanceW);
+  buttonW =  (width - ((numBeats-1)*distanceW) ) / numBeats ; 
+  
+}
+
+
+
+
+void draw () {
+  background(140);
+  fill(255);
+//  imageMode(CENTER);
+  textAlign(CORNER);
+  textSize(height/30);
+  text( "Speed: " + duration  , width/10 , height / 10 );
+  stroke(255);
+  line(0 , height / 10 + height/40 , width , height / 10 + height/40 );
+  image( ret , width/2 , height / 50 , width/10 , height / 10 );
+  image( ff ,width/2 + width/10 + width/100, height / 50 , width/10 , height / 10);
+  image (mais ,width/2 + 2* width/10 + 2*width/100  , height / 50 , width/10 , height / 10 );
+  image(menos,width/2 + 3* width/10 + 3*width/100  , height / 50 , width/10 , height / 10 );
+  
+  stroke(0 , 0 , 100);
+  line( width/2 , 0 , buttonW / 2 + currentBeat * buttonW + (currentBeat) * distanceW  , n[4]*  height/40 );
+  line( width/2 , 0 , buttonW / 2 + currentBeat * buttonW + (currentBeat) * distanceW  , n[1]*  height/40 );
+  line( width/2 , 0 , buttonW / 2 + currentBeat * buttonW + (currentBeat) * distanceW  , n[2]*  height/40 );
+  line( width/2 , 0 , buttonW / 2 + currentBeat * buttonW + (currentBeat) * distanceW  , n[3]*  height/40 );
+
+  stroke(255);
+  textAlign(CENTER);
+  text ("Bass drum" , width/2 ,  n[0]*  height/40 - distanceH );
+  text ("Clap" , width/2 ,  n[1]*  height/40 - distanceH );
+  text ("Crash" , width/2 ,  n[2]*  height/40 - distanceH );
+  text ("Hihat" , width/2 ,  n[3]*  height/40 - distanceH );
+  text ("Snare" , width/2 ,  n[4]*  height/40 - distanceH );
+  fill(0);
+
+  for (int i = 0 ; i < numBeats ; i++ ){
+    if (bass[i] ) 
+      fill(0);
+    else 
+      fill(255);
+    rect ( i * buttonW + i * distanceW , n[0]*  height/40  , buttonW , buttonH , 7);
+    if (clap[i] )
+      fill(0);
+    else
+      fill(255);
+    rect ( i * buttonW + i * distanceW , n[1]*  height/40  , buttonW , buttonH , 7);  
+    if (crash[i] )
+      fill(0);
+    else
+      fill(255);
+    rect ( i * buttonW + i * distanceW , n[2]*  height/40  , buttonW , buttonH , 7);  
+    if (hihat[i] )
+      fill(0);
+    else
+      fill(255);
+    rect ( i * buttonW + i * distanceW , n[3]*  height/40  , buttonW , buttonH , 7); 
+   if (snare[i] )
+      fill(0);
+    else
+      fill(255);
+    rect ( i * buttonW + i * distanceW , n[4]*  height/40  , buttonW , buttonH , 7); 
+  }
+
+  if (playHead % floor(60/duration) == 0 ) {
+  currentBeat ++;
+  currentBeat = currentBeat % numBeats ;
+    if (bass[currentBeat]){
+      bd.cue(0);
+      bd.play();
+    }if (clap[currentBeat]){
+      cp.cue(0);
+      cp.play();
+    }if (hihat[currentBeat]){
+      hh.cue(0);
+      hh.play();
+    }if (snare[currentBeat]){
+      sn.cue(0);
+      sn.play();
+    }if (crash[currentBeat]){
+      cr.cue(0);
+      cr.play();
+    }
+  }
+  playHead++;
+
+  stroke(0 , 0 , 100);
+  line( width/2 , 0 , buttonW / 2 + currentBeat * buttonW + (currentBeat) * distanceW  , n[0]*  height/40 );
+
+  line(buttonW / 2 + currentBeat * buttonW + (currentBeat) * distanceW ,n[0]*  height/40 ,
+  buttonW / 2 + currentBeat * buttonW + (currentBeat) * distanceW  , n[4]*  height/40);
+  stroke(255);
+
+
+
+
+}
+
+void mousePressed() {
+  if (mouseY > height / 50 && mouseY < height / 50 + height / 10 ){
+    if (mouseX >width/2 && mouseX < width/2 + width/10 ) {
+      println("ret");
+      duration -= 1;
+      duration = round (duration , 2 );
+    }else if (mouseX > width/2 + width/10 + width/100 && mouseX < width/2 + width/10 + width/100 + width/10){
+      println("ff");
+      duration+= 1;
+      duration = round (duration , 2 );
+    }else if (mouseX >width/2 + 2* width/10 + 2*width/100 && mouseX < width/2 + 2* width/10 + 2*width/100 + width/10){
+      println("mais");
+      numBeats ++;
+      reset();
+    }else if ( mouseX > width/2 + 3* width/10 + 3*width/100 && mouseX < width/2 + 3* width/10 + 3*width/100+ width/10){
+      println("menos");
+      numBeats--;
+      reset();
+    }
+  }
+  else if (mouseY > n[0]*  height/40 && mouseY < n[0]*  height/40 + buttonH ){
+    for ( int i = 0 ; i < numBeats ; i++) {
+      if (mouseX > i * buttonW + i * distanceW && mouseX < i * buttonW + i * distanceW + buttonW ){
+        bass[i] = !bass[i];
+      }
+    }
+  }else if (mouseY > n[1]*  height/40 && mouseY < n[1]*  height/40 + buttonH ){
+    for ( int i = 0 ; i < numBeats ; i++) {
+      if (mouseX > i * buttonW + i * distanceW && mouseX < i * buttonW + i * distanceW + buttonW ){
+        clap[i] = !clap[i];
+      }
+    }
+  }else if (mouseY > n[2]*  height/40 && mouseY < n[2]*  height/40 + buttonH ){
+    for ( int i = 0 ; i < numBeats ; i++) {
+      if (mouseX > i * buttonW + i * distanceW && mouseX < i * buttonW + i * distanceW + buttonW ){
+        crash[i] = !crash[i];
+      }
+    }
+  }else if (mouseY > n[3]*  height/40 && mouseY < n[3]*  height/40 + buttonH ){
+    for ( int i = 0 ; i < numBeats ; i++) {
+      if (mouseX > i * buttonW + i * distanceW && mouseX < i * buttonW + i * distanceW + buttonW ){
+        hihat[i] = !hihat[i];
+      }
+    }
+  }else if (mouseY > n[4]*  height/40 && mouseY < n[4]*  height/40 + buttonH ){
+    for ( int i = 0 ; i < numBeats ; i++) {
+      if (mouseX > i * buttonW + i * distanceW && mouseX < i * buttonW + i * distanceW + buttonW ){
+        snare[i] = !snare[i];
+      }
+    }
+  }
+}
+float round(float number, float decimal) {
+    return (float)(round((number*pow(10, decimal))))/pow(10, decimal);
+} 
